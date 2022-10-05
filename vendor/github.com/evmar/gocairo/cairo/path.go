@@ -40,7 +40,7 @@ func decodePathSegment(pathData unsafe.Pointer) (*PathSegment, int) {
 		Type:   PathDataType(header.dataType),
 		Points: make([]PathPoint, header.length-1),
 	}
-	parts := (*[1 << 30]PathPoint)(pathData)
+	parts := (*[1 << 20]PathPoint)(pathData)
 	copy(seg.Points, parts[1:])
 	return &seg, int(header.length)
 }

@@ -81,7 +81,7 @@ type writeClosure struct {
 func gocairoWriteFunc(key C.int, data unsafe.Pointer, clength C.uint) bool {
 	writeClosure := goPointers.get(key).(writeClosure)
 	length := uint(clength)
-	slice := ((*[1 << 30]byte)(data))[:length:length]
+	slice := ((*[1 << 20]byte)(data))[:length:length]
 	_, writeClosure.err = writeClosure.w.Write(slice)
 	return writeClosure.err == nil
 }
@@ -95,7 +95,7 @@ type readClosure struct {
 func gocairoReadFunc(key C.int, data unsafe.Pointer, clength C.uint) bool {
 	readClosure := goPointers.get(key).(readClosure)
 	length := uint(clength)
-	buf := ((*[1 << 30]byte)(data))[:length:length]
+	buf := ((*[1 << 20]byte)(data))[:length:length]
 	_, readClosure.err = io.ReadFull(readClosure.r, buf)
 	return readClosure.err == nil
 }
